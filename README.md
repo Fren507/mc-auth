@@ -1,9 +1,5 @@
 # MC Auth
 
-## Setup
+MC Auth is a simple server-side Minecraft mod for generating temporary tokens! Just type in chat `/verify` in the chat and you'll get a token: `XXXX-XXXX-XXXX`
 
-For setup instructions, please see the [Fabric Documentation page](https://docs.fabricmc.net/develop/getting-started/creating-a-project#setting-up) related to the IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+For more information for the usage and api read [WEBSERVER EXAMPLE](./WEBSERVER_EXAMPLE.md)!
