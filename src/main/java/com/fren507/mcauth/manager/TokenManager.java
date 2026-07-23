@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Stream;
 
 public class TokenManager {
     private static final Path CONFIG_DIR = FabricLoader.getInstance().getConfigDir().resolve("mcauth");
@@ -106,7 +107,9 @@ public class TokenManager {
 
     public Optional<TokenData> getToken(String tokenStr) {
         cleanExpiredTokens();
-        return tokens.stream().filter(t -> t.getToken().equals(tokenStr)).findFirst();
+        return tokens.stream()
+                .filter(t -> t.getToken().equals(tokenStr))
+                .findFirst();
     }
 
     public Optional<TokenData> findPlayerToken(UUID playerUUID) {
