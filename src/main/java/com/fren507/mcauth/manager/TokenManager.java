@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Stream;
 
 public class TokenManager {
     private static final Path CONFIG_DIR = FabricLoader.getInstance().getConfigDir().resolve("mcauth");
@@ -38,7 +37,8 @@ public class TokenManager {
             }
             if (Files.exists(TOKENS_FILE)) {
                 try (Reader reader = Files.newBufferedReader(TOKENS_FILE)) {
-                    List<TokenData> loaded = GSON.fromJson(reader, new TypeToken<List<TokenData>>(){}.getType());
+                    List<TokenData> loaded = GSON.fromJson(reader, new TypeToken<List<TokenData>>() {
+                    }.getType());
                     if (loaded != null) {
                         tokens.clear();
                         tokens.addAll(loaded);
@@ -89,8 +89,7 @@ public class TokenManager {
         for (int i = 0; i < 12; i++) {
             sb.append(chars.charAt(SECURE_RANDOM.nextInt(chars.length())));
         }
-        // Format: XXXX-XXXX-XXXX
-        return sb.substring(0, 4) + "-" + sb.substring(4, 8) + "-" + sb.substring(8, 12);
+        return sb.toString();
     }
 
     public void cleanExpiredTokens() {
@@ -117,5 +116,17 @@ public class TokenManager {
         return tokens.stream()
                 .filter(t -> t.getPlayerUUID().equals(playerUUID) && t.isValid())
                 .findFirst();
+    }
+
+    public boolean invalidateToken(String token) {
+        return tokens.stream()
+                .filter(t -> t.getToken().equals(token) && t.isValid())
+                .findFirst()
+                .map(t -> {
+                    t.setValid(false);
+                    saveTokens();
+                    return true;
+                })
+                .orElse(false);
     }
 }

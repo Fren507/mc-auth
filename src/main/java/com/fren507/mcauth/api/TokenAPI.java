@@ -30,6 +30,22 @@ public final class TokenAPI {
     }
 
     /**
+     * Entwerten eines spezifischen Tokens.
+     *
+     * @param token Token-String.
+     * @return {@code true}, wenn das Token gefunden und erfolgreich entwertet wurde;
+     * {@code false}, wenn das Token ungültig/nicht vorhanden ist oder der Manager fehlt.
+     */
+    public static boolean invalidateToken(String token) {
+        if (token == null || token.isBlank()) return false;
+
+        TokenManager manager = getManager();
+        if (manager == null) return false;
+
+        return manager.invalidateToken(token);
+    }
+
+    /**
      * Gibt die Daten eines Tokens zurück.
      *
      * @param token Token-String
